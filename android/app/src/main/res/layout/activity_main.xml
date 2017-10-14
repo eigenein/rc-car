@@ -7,4 +7,17 @@
     android:layout_height="match_parent"
     tools:context="me.eigenein.arduinocar.MainActivity">
 
+    <ninja.eigenein.joypad.JoypadView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintDimensionRatio="H, 1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:inner_color="@color/primary"
+        app:outer_color="@color/primary"
+        app:moveable_color="@color/accent"
+        app:directions_color="@android:color/white"/>
+
 </android.support.constraint.ConstraintLayout>
