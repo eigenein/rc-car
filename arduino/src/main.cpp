@@ -12,23 +12,21 @@
 
 const unsigned int BYTE_ORDER_MARK = 0xFEFF;
 
-#define COMMAND_NOOP    0x01
-#define COMMAND_STOP    0x02
-#define COMMAND_MOVE    0x03
+#define MESSAGE_NOOP    0x01
+#define MESSAGE_BRAKE   0x02
+#define MESSAGE_MOVE    0x03
 
 #define SPEED_FULL      255
-#define SPEED_INVERSE   1
+#define FLAG_INVERSE    1
 
 // Pins.
 // -------------------------------------------------------------------------------------------------
 
-#define PIN_RIGHT_1      2
-#define PIN_RIGHT_SPEED  3
-#define PIN_RIGHT_2      4
-#define PIN_LEFT_SPEED   10
-#define PIN_LEFT_1       5
-#define PIN_LEFT_2       6
-#define PIN_INDICATOR    13
+#define PIN_LEFT_OUTPUT   2
+#define PIN_LEFT_PWM      3
+#define PIN_RIGHT_OUTPUT  4
+#define PIN_RIGHT_PWM     5
+#define PIN_INDICATOR     13
 
 // Main loop.
 // -------------------------------------------------------------------------------------------------
@@ -38,42 +36,37 @@ int blockingRead() {
     return Serial.read();
 }
 
-void stop() {
-    // Block left wheel.
-    digitalWrite(PIN_LEFT_1, LOW);
-    digitalWrite(PIN_LEFT_2, LOW);
-    analogWrite(PIN_LEFT_SPEED, SPEED_FULL);
-    // Block right wheel.
-    digitalWrite(PIN_RIGHT_1, LOW);
-    digitalWrite(PIN_RIGHT_2, LOW);
-    analogWrite(PIN_RIGHT_SPEED, SPEED_FULL);
+void brake() {
+    digitalWrite(PIN_LEFT_OUTPUT, HIGH);
+    digitalWrite(PIN_LEFT_PWM, HIGH);
+
+    digitalWrite(PIN_RIGHT_OUTPUT, HIGH);
+    digitalWrite(PIN_RIGHT_PWM, HIGH);
 }
 
 bool receiveCommand() {
     switch (blockingRead()) {
 
-        case COMMAND_NOOP:
+        case MESSAGE_NOOP:
             break;
 
-        case COMMAND_MOVE:
+        case MESSAGE_MOVE:
             {
                 int leftSpeed = blockingRead();
                 int leftInverse = blockingRead();
                 int rightSpeed = blockingRead();
                 int rightInverse = blockingRead();
                 // Left wheel.
-                analogWrite(PIN_LEFT_SPEED, leftSpeed);
-                digitalWrite(PIN_LEFT_1, leftInverse == SPEED_INVERSE ? HIGH : LOW);
-                digitalWrite(PIN_LEFT_2, leftInverse == SPEED_INVERSE ? LOW : HIGH);
+                digitalWrite(PIN_LEFT_OUTPUT, leftInverse != FLAG_INVERSE ? LOW : HIGH);
+                analogWrite(PIN_LEFT_PWM, leftInverse != FLAG_INVERSE ? leftSpeed : 255 - leftSpeed);
                 // Right wheel.
-                analogWrite(PIN_RIGHT_SPEED, rightSpeed);
-                digitalWrite(PIN_RIGHT_1, rightInverse == SPEED_INVERSE ? HIGH : LOW);
-                digitalWrite(PIN_RIGHT_2, rightInverse == SPEED_INVERSE ? LOW : HIGH);
+                digitalWrite(PIN_RIGHT_OUTPUT, rightInverse != FLAG_INVERSE ? LOW : HIGH);
+                analogWrite(PIN_RIGHT_PWM, rightInverse != FLAG_INVERSE ? rightSpeed : 255 - rightSpeed);
             }
             break;
 
-        case COMMAND_STOP:
-            stop();
+        case MESSAGE_BRAKE:
+            brake();
             break;
 
         default:
@@ -108,17 +101,15 @@ void sendTelemetry() {
 // -------------------------------------------------------------------------------------------------
 
 void setup() {
-    pinMode(PIN_LEFT_SPEED, OUTPUT);
-    pinMode(PIN_LEFT_1, OUTPUT);
-    pinMode(PIN_LEFT_2, OUTPUT);
+    pinMode(PIN_LEFT_OUTPUT, OUTPUT);
+    pinMode(PIN_LEFT_PWM, OUTPUT);
 
-    pinMode(PIN_RIGHT_SPEED, OUTPUT);
-    pinMode(PIN_RIGHT_1, OUTPUT);
-    pinMode(PIN_RIGHT_2, OUTPUT);
+    pinMode(PIN_RIGHT_OUTPUT, OUTPUT);
+    pinMode(PIN_RIGHT_PWM, OUTPUT);
 
     pinMode(PIN_INDICATOR, OUTPUT);
 
-    stop();
+    brake();
     Serial.begin(9600);
 }
 
