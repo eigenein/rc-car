@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_main_connect"
+        android:title="@string/menu_item_connect"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_settings_bluetooth_black_24dp"
+        android:iconTint="@color/icon_active"/>
+</menu>

@@ -4,4 +4,5 @@
     <color name="primary_dark">#002984</color>
     <color name="primary_light">#757de8</color>
     <color name="accent">#ff4081</color>
+    <color name="icon_active">#ffffffff</color>
 </resources>

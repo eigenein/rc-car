@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Arduino Car</string>
+    <string name="toast_no_paired_devices">No paired devices found</string>
+    <string name="menu_item_connect">Connect</string>
+    <string name="dialog_title_choose_vehicle">Choose vehicle device</string>
+    <string name="toast_connected">Successfully connected to %1$s</string>
+    <string name="toast_connecting">Connecting to %1$s</string>
+    <string name="toast_connection_failed">Connection to %1$s failed</string>
 </resources>
