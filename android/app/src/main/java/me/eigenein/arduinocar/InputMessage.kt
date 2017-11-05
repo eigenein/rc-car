@@ -9,6 +9,8 @@ interface InputMessage
 data class ConnectedMessage(val device_name: String) : InputMessage
 data class DeprecatedTelemetryMessage(val vcc: Float) : InputMessage
 
+fun InputStream.readValue(size: Int): ByteArray = (1..size).map { read().toByte() }.toByteArray()
+
 fun InputStream.messageIterable() = object : Iterable<InputMessage> {
     override fun iterator(): Iterator<InputMessage> = object : Iterator<InputMessage> {
         override fun hasNext(): Boolean = true

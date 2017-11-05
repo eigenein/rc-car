@@ -5,13 +5,10 @@ import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.Subject
-import java.io.InputStream
 import java.util.*
 
 private val logTag = "BluetoothExtensions"
 private val serialUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
-
-fun InputStream.readValue(size: Int): ByteArray = (1..size).map { read().toByte() }.toByteArray()
 
 fun BluetoothDevice.messages(subject: Subject<OutputMessage>): Observable<InputMessage> = Observable.using({
     Log.i(logTag, "Connecting to %s".format(name))
@@ -30,7 +27,7 @@ fun BluetoothDevice.messages(subject: Subject<OutputMessage>): Observable<InputM
 }, {
     val (socket, _) = it
 
-    Observable.merge(
+    Observable.concat(
         Observable.just(ConnectedMessage(name)),
         Observable.fromIterable(socket.inputStream.messageIterable())
     )
