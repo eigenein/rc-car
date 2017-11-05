@@ -13,19 +13,28 @@ import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
+import ninja.eigenein.joypad.JoypadView
+import ninja.eigenein.joypad.WheelsPower
 import java.io.IOException
 
-class MainActivity : Activity() {
+class MainActivity : Activity(), JoypadView.Listener {
 
     private val logTag = MainActivity::class.java.simpleName
     private val connectRetriesCount = 5L
 
+    private val outputMessagesSubject = PublishSubject.create<OutputMessage>()
     private val connectionDisposable = CompositeDisposable()
+
+    private lateinit var joypadView: JoypadView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(R.layout.activity_main)
+
+        joypadView = findViewById(R.id.joypad_view)
+        joypadView.setListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -49,6 +58,15 @@ class MainActivity : Activity() {
         connectionDisposable.clear()
     }
 
+    override fun onUp() {
+        outputMessagesSubject.onNext(deprecatedBrakeOutputMessage)
+    }
+
+    override fun onMove(distance: Float, dx: Float, dy: Float) {
+        val wheelsPower = WheelsPower.wheelsPower(distance, dx, dy)
+        outputMessagesSubject.onNext(DeprecatedMoveOutputMessage(wheelsPower.left, wheelsPower.right))
+    }
+
     private fun showDevicesDialog(listener: (BluetoothDevice) -> Unit) {
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         if (!bluetoothAdapter.isEnabled) {
@@ -70,7 +88,7 @@ class MainActivity : Activity() {
     private fun connectTo(device: BluetoothDevice) {
         connectionDisposable.clear() // close any still existing connection
         connectionDisposable.add(
-            device.messages()
+            device.messages(outputMessagesSubject)
                 .subscribeOn(Schedulers.newThread())
                 .retry(connectRetriesCount)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -90,9 +108,12 @@ class MainActivity : Activity() {
     }
 
     private fun onInputMessage(message: InputMessage) {
-        Log.d(logTag, "InputMessage: %s".format(message))
+        Log.d(logTag, "Input message: %s".format(message))
         when (message) {
-            is ConnectedMessage -> Toast.makeText(this, getString(R.string.toast_connected, message.device_name), Toast.LENGTH_SHORT).show()
+            is ConnectedMessage -> {
+                Toast.makeText(this, getString(R.string.toast_connected, message.device_name), Toast.LENGTH_SHORT).show()
+                outputMessagesSubject.onNext(deprecatedNoOperationOutputMessage) // FIXME
+            }
         }
     }
 }

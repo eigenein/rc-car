@@ -1,24 +1,29 @@
 package me.eigenein.arduinocar
 
-abstract class OutputMessage(val type: Type) {
-    enum class Type(val type: Byte) {
-        DEPRECATED_NO_OPERATION(1),
-        DEPRECATED_BRAKE(2),
-        DEPRECATED_MOVE(3)
+import java.io.OutputStream
+
+interface OutputMessage
+
+data class DeprecatedNoOperationOutputMessage(val unit: Unit) : OutputMessage
+data class DeprecatedBrakeOutputMessage(val unit: Unit) : OutputMessage
+data class DeprecatedMoveOutputMessage(val left: Float, val right: Float) : OutputMessage
+
+val deprecatedNoOperationOutputMessage = DeprecatedNoOperationOutputMessage(Unit)
+val deprecatedBrakeOutputMessage = DeprecatedBrakeOutputMessage(Unit)
+
+fun OutputStream.writeMessage(message: OutputMessage) = write(
+    when (message) {
+        is DeprecatedNoOperationOutputMessage -> byteArrayOf(0x01)
+        is DeprecatedBrakeOutputMessage -> byteArrayOf(0x02)
+        is DeprecatedMoveOutputMessage -> byteArrayOf(
+            0x03,
+            speedToByte(message.left),
+            if (message.left < 0f) 1 else 0,
+            speedToByte(message.right),
+            if (message.right < 0f) 1 else 0
+        )
+        else -> byteArrayOf()
     }
+)
 
-    fun serialize(): ByteArray {
-        val payload = payload()
-        return header(payload) + payload
-    }
-
-    open fun header(payload: ByteArray) = byteArrayOf(type.type, payload.size.toByte())
-    open fun payload() = ByteArray(0)
-}
-
-abstract class DeprecatedOutputMessage(type: Type) : OutputMessage(type) {
-    // Deprecated messages haven't got the length field.
-    override fun header(payload: ByteArray) = byteArrayOf(type.type)
-}
-
-class DeprecatedNoOperationOutputMessage : DeprecatedOutputMessage(OutputMessage.Type.DEPRECATED_NO_OPERATION)
+private fun speedToByte(speed: Float) = (Math.abs(speed) * 255f).toByte()

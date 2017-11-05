@@ -3,6 +3,8 @@ package me.eigenein.arduinocar
 import android.bluetooth.BluetoothDevice
 import android.util.Log
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.Subject
 import java.io.InputStream
 import java.util.*
 
@@ -11,18 +13,30 @@ private val serialUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 
 fun InputStream.readValue(size: Int): ByteArray = (1..size).map { read().toByte() }.toByteArray()
 
-fun BluetoothDevice.messages(): Observable<InputMessage> = Observable.using({
+fun BluetoothDevice.messages(subject: Subject<OutputMessage>): Observable<InputMessage> = Observable.using({
     Log.i(logTag, "Connecting to %s".format(name))
-    this.createRfcommSocketToServiceRecord(serialUUID)
-}, {
-    it.connect()
+    val socket = this.createRfcommSocketToServiceRecord(serialUUID)
+    socket.connect()
     Log.i(logTag, "Connected to %s".format(name))
-    it.outputStream.write(DeprecatedNoOperationOutputMessage().serialize()) // FIXME
+
+    val outputSubscription = subject
+        .subscribeOn(Schedulers.newThread())
+        .subscribe {
+            Log.d(logTag, "Output message: %s".format(it))
+            socket.outputStream.writeMessage(it)
+        }
+
+    Pair(socket, outputSubscription)
+}, {
+    val (socket, _) = it
+
     Observable.merge(
         Observable.just(ConnectedMessage(name)),
-        Observable.fromIterable(it.inputStream.messageIterable())
+        Observable.fromIterable(socket.inputStream.messageIterable())
     )
 }, {
+    val (socket, outputSubscription) = it
     Log.i(logTag, "Closing connection to %s".format(name))
-    it.close()
+    outputSubscription.dispose()
+    socket.close()
 })
