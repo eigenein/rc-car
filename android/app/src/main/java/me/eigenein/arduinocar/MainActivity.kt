@@ -112,6 +112,7 @@ class MainActivity : Activity(), JoypadView.Listener {
                     },
                     { Log.e(logTag, "Connection stream ended") },
                     {
+                        // FIXME: the handler doesn't work on retries.
                         Toast.makeText(this, getString(R.string.toast_connecting, device.name), Toast.LENGTH_SHORT).show()
                         progressBar.show()
                     }
