@@ -13,11 +13,11 @@ import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
+import java.io.IOException
 
 class MainActivity : Activity() {
 
-    private val serialUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
+    private val logTag = MainActivity::class.java.simpleName
     private val connectRetriesCount = 5L
 
     private val connectionDisposable = CompositeDisposable()
@@ -70,22 +70,29 @@ class MainActivity : Activity() {
     private fun connectTo(device: BluetoothDevice) {
         connectionDisposable.clear() // close any still existing connection
         connectionDisposable.add(
-            device.listen(serialUUID)
+            device.messages()
                 .subscribeOn(Schedulers.newThread())
                 .retry(connectRetriesCount)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    { onMessage(it) },
-                    { Toast.makeText(this, getString(R.string.toast_connection_failed, device.name), Toast.LENGTH_SHORT).show() }
+                    { onInputMessage(it) },
+                    {
+                        if (it !is IOException) {
+                            throw RuntimeException(it) // non-IO errors shouldn't be suppressed
+                        }
+                        Log.e(logTag, "Connection to " + device.name + " failed")
+                        Toast.makeText(this, getString(R.string.toast_connection_failed, device.name), Toast.LENGTH_SHORT).show()
+                    },
+                    { Log.e(logTag, "Connection stream ended") },
+                    { Toast.makeText(this, getString(R.string.toast_connecting, device.name), Toast.LENGTH_SHORT).show() }
                 )
         )
     }
 
-    private fun onMessage(message: Message) {
-        Log.d(logTag, "Message: %s".format(message))
+    private fun onInputMessage(message: InputMessage) {
+        Log.d(logTag, "InputMessage: %s".format(message))
         when (message) {
-            is ConnectingMessage -> Toast.makeText(this, getString(R.string.toast_connecting, message.name), Toast.LENGTH_SHORT).show()
-            is ConnectedMessage -> Toast.makeText(this, getString(R.string.toast_connected, message.name), Toast.LENGTH_SHORT).show()
+            is ConnectedMessage -> Toast.makeText(this, getString(R.string.toast_connected, message.device_name), Toast.LENGTH_SHORT).show()
         }
     }
 }
