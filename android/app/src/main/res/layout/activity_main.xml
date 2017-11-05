@@ -48,10 +48,12 @@
             android:id="@+id/joypad_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:inner_color="@color/primary"
-            app:outer_color="@color/primary"
+            app:directions_color="@color/primary_light"
+            app:inner_color="@color/primary_light"
+            app:inner_radius="100dp"
             app:moveable_color="@color/accent"
-            app:directions_color="@color/primary_light"/>
+            app:moveable_radius="80dp"
+            app:outer_color="@color/primary"/>
     </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>
