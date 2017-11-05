@@ -30,6 +30,9 @@ class MainActivity : Activity(), JoypadView.Listener {
     private lateinit var joypadView: JoypadView
     private lateinit var progressBar: ProgressBar
 
+    private lateinit var deviceNameMenuItem: MenuItem
+    private lateinit var vccMenuItem: MenuItem
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -42,6 +45,8 @@ class MainActivity : Activity(), JoypadView.Listener {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        deviceNameMenuItem = menu.findItem(R.id.menu_main_device_name)
+        vccMenuItem = menu.findItem(R.id.menu_main_vcc)
         return true
     }
 
@@ -118,10 +123,12 @@ class MainActivity : Activity(), JoypadView.Listener {
         Log.d(logTag, "Input message: %s".format(message))
         when (message) {
             is ConnectedMessage -> {
+                deviceNameMenuItem.title = message.device_name
                 Toast.makeText(this, getString(R.string.toast_connected, message.device_name), Toast.LENGTH_SHORT).show()
                 progressBar.gone()
                 outputMessagesSubject.onNext(deprecatedNoOperationOutputMessage) // FIXME
             }
+            is DeprecatedTelemetryMessage -> vccMenuItem.title = "%.2fV".format(message.vcc)
         }
     }
 }
