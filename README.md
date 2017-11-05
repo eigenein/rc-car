@@ -1,5 +1,7 @@
 DIY RC car controlled by Android app via Bluetooth.
 
+![](images/Screenshot_20171105-182204_framed)
+
 ## Components
 
 * [Arduino Nano V3.0 compatible board](https://www.aliexpress.com/item/Nano-CH340-ATmega328P-MicroUSB-Pins-soldered-Compatible-for-Arduino-Nano-V3-0/32572612009.html)
