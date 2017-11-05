@@ -1,6 +1,6 @@
 DIY RC car controlled by Android app via Bluetooth.
 
-![](images/Screenshot_20171105-182204_framed)
+![](images/Screenshot_20171105-182204_framed.png)
 
 ## Components
 
