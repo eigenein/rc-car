@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
+import android.widget.ProgressBar
 import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -27,6 +28,7 @@ class MainActivity : Activity(), JoypadView.Listener {
     private val connectionDisposable = CompositeDisposable()
 
     private lateinit var joypadView: JoypadView
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,7 @@ class MainActivity : Activity(), JoypadView.Listener {
 
         joypadView = findViewById(R.id.joypad_view)
         joypadView.setListener(this)
+        progressBar = findViewById(R.id.progress_bar)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -100,9 +103,13 @@ class MainActivity : Activity(), JoypadView.Listener {
                         }
                         Log.e(logTag, "Connection to " + device.name + " failed")
                         Toast.makeText(this, getString(R.string.toast_connection_failed, device.name), Toast.LENGTH_SHORT).show()
+                        progressBar.gone()
                     },
                     { Log.e(logTag, "Connection stream ended") },
-                    { Toast.makeText(this, getString(R.string.toast_connecting, device.name), Toast.LENGTH_SHORT).show() }
+                    {
+                        Toast.makeText(this, getString(R.string.toast_connecting, device.name), Toast.LENGTH_SHORT).show()
+                        progressBar.show()
+                    }
                 )
         )
     }
@@ -112,6 +119,7 @@ class MainActivity : Activity(), JoypadView.Listener {
         when (message) {
             is ConnectedMessage -> {
                 Toast.makeText(this, getString(R.string.toast_connected, message.device_name), Toast.LENGTH_SHORT).show()
+                progressBar.gone()
                 outputMessagesSubject.onNext(deprecatedNoOperationOutputMessage) // FIXME
             }
         }
