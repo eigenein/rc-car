@@ -12,21 +12,21 @@
 
 const unsigned int BYTE_ORDER_MARK = 0xFEFF;
 
-#define MESSAGE_NOOP    0x01
-#define MESSAGE_BRAKE   0x02
-#define MESSAGE_MOVE    0x03
+const int MESSAGE_NOOP = 0x01;
+const int MESSAGE_BRAKE = 0x02;
+const int MESSAGE_MOVE = 0x03;
 
-#define SPEED_FULL      255
-#define FLAG_INVERSE    1
+const int SPEED_FULL = 255;
+const int FLAG_INVERSE = 1;
 
 // Pins.
 // -------------------------------------------------------------------------------------------------
 
-#define PIN_LEFT_OUTPUT   2
-#define PIN_LEFT_PWM      3  // FIXME: change to 6 (because 3 and 5 are on different timers).
-#define PIN_RIGHT_OUTPUT  4
-#define PIN_RIGHT_PWM     5
-#define PIN_INDICATOR     13
+const int PIN_LEFT_OUTPUT = 2;
+const int PIN_LEFT_PWM = 3;  // FIXME: change to 6 (because 3 and 5 are on different timers).
+const int PIN_RIGHT_OUTPUT = 4;
+const int PIN_RIGHT_PWM = 5;
+const int PIN_INDICATOR = 13;
 
 // Main loop.
 // -------------------------------------------------------------------------------------------------
