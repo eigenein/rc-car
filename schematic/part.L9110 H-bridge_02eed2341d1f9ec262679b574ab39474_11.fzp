@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<module fritzingVersion="0.4.1b.07.17.4356" moduleId="L9110 H-bridge_02eed2341d1f9ec262679b574ab39474_11" referenceFile="Barometric Pressure Sensor.fzp">
+ <author>Igor Fonseca Albuquerque</author>
+ <title>L9110 H-bridge module</title>
+ <label>U</label>
+ <date>sex fev 17 2017</date>
+ <tags>
+  <tag>L9110</tag>
+  <tag>h-bridge</tag>
+ </tags>
+ <properties>
+  <property name="variant">variant 1</property>
+  <property name="family">L9110</property>
+  <property name="part number">L9110 H-bridge</property>
+  <property name="layer"></property>
+ </properties>
+ <description>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-family:'Ubuntu'; font-size:11pt;">L9110 H-bridge module&lt;/span>&lt;/p>&lt;/body>&lt;/html></description>
+ <views>
+  <iconView>
+   <layers image="icon/L9110 H-bridge_9eed947992b17e43635203677d03ae4a_2_icon.svg">
+    <layer layerId="icon"/>
+   </layers>
+  </iconView>
+  <schematicView>
+   <layers image="schematic/L9110 H-bridge_9eed947992b17e43635203677d03ae4a_2_schematic.svg">
+    <layer layerId="schematic"/>
+   </layers>
+  </schematicView>
+  <breadboardView>
+   <layers image="breadboard/L9110 H-bridge_9eed947992b17e43635203677d03ae4a_2_breadboard.svg">
+    <layer layerId="breadboard"/>
+   </layers>
+  </breadboardView>
+  <pcbView>
+   <layers image="pcb/L9110 H-bridge_9eed947992b17e43635203677d03ae4a_2_pcb.svg">
+    <layer layerId="copper0"/>
+    <layer layerId="silkscreen"/>
+    <layer layerId="copper1"/>
+   </layers>
+  </pcbView>
+ </views>
+ <connectors>
+  <connector type="male" name="VCC" id="connector3">
+   <description>2.5 to 12V</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector3pin" layer="breadboard" terminalId="connector3terminal"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector3pin" layer="schematic" terminalId="connector3terminal"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector3pin" layer="copper1" terminalId="connector3terminal"/>
+     <p svgId="connector3pin" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="male" name="A-IA" id="connector4">
+   <description>Digital input</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector4pin" layer="breadboard" terminalId="connector4terminal"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector4pin" layer="schematic" terminalId="connector4terminal"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector4pin" layer="copper1"/>
+     <p svgId="connector4pin" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="male" name="A-IB" id="connector5">
+   <description>Digital input</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector5pin" layer="breadboard" terminalId="connector5terminal"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector5pin" layer="schematic" terminalId="connector5terminal"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector5pin" layer="copper1" terminalId="connector5terminal"/>
+     <p svgId="connector5pin" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="male" name="B-IA" id="connector0">
+   <description>Digital input</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector0pin" layer="breadboard" terminalId="connector0terminal"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector0pin" layer="schematic" terminalId="connector0terminal"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector0pin" layer="copper1"/>
+     <p svgId="connector0pin" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="male" name="B-IB" id="connector1">
+   <description>Digital input</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector1pin" layer="breadboard" terminalId="connector1terminal"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector1pin" layer="schematic" terminalId="connector1terminal"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector1pin" layer="copper1" terminalId="connector1terminal"/>
+     <p svgId="connector1pin" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="male" name="GND" id="connector2">
+   <description>GND</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector2pin" layer="breadboard" terminalId="connector2terminal"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector2pin" layer="schematic" terminalId="connector2terminal"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector2pin" layer="copper1" terminalId="connector2terminal"/>
+     <p svgId="connector2pin" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="female" name="MOTOR A-A" id="connector6">
+   <description>pin 6</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector6pin" layer="breadboard" terminalId="connector6terminal"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector6pin" layer="schematic" terminalId="connector6terminal"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector6pin" layer="copper1"/>
+     <p svgId="connector6pin" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="female" name="MOTOR A-B" id="connector7">
+   <description>pin 7</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector7pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector7pin" layer="schematic" terminalId="connector7terminal"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector7pin" layer="copper1"/>
+     <p svgId="connector7pin" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="female" name="MOTOR B-A" id="connector8">
+   <description>pin 8</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector8pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector8pin" layer="schematic" terminalId="connector8terminal"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector8pin" layer="copper1"/>
+     <p svgId="connector8pin" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="female" name="MOTOR B-B" id="connector9">
+   <description>pin 9</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector9pin" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector9pin" layer="schematic" terminalId="connector9terminal"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector9pin" layer="copper1"/>
+     <p svgId="connector9pin" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+ </connectors>
+ <url/>
+</module>
