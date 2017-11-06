@@ -12,3 +12,7 @@ DIY RC car controlled by Android app via Bluetooth.
 * Chassis kit [like this one](https://www.aliexpress.com/item/new-4wd-smart-robot-car-chassis-kits-1-48-double-Board-strong-Smart-car-chassis-for/32604275012.html)
 * [4x AA chargable batteries](http://www.ikea.com/nl/nl/catalog/products/70303876/)
 * 4x AA battery holder
+
+## Schematic
+
+![](images/schematic.png)
