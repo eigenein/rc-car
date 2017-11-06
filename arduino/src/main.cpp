@@ -23,7 +23,7 @@ const unsigned int BYTE_ORDER_MARK = 0xFEFF;
 // -------------------------------------------------------------------------------------------------
 
 #define PIN_LEFT_OUTPUT   2
-#define PIN_LEFT_PWM      3
+#define PIN_LEFT_PWM      3  // FIXME: change to 6 (because 3 and 5 are on different timers).
 #define PIN_RIGHT_OUTPUT  4
 #define PIN_RIGHT_PWM     5
 #define PIN_INDICATOR     13
@@ -101,6 +101,11 @@ void sendTelemetry() {
 // -------------------------------------------------------------------------------------------------
 
 void setup() {
+    // Set the maximum possible PWM frequency for the motors.
+    // http://forum.arduino.cc/index.php?topic=16612.msg121031#msg121031
+    TCCR0B = (TCCR0B & 0b11111000) | 0x01;
+    TCCR2B = (TCCR2B & 0b11111000) | 0x01; // FIXME: remove after changing PIN_LEFT_PWM.
+
     pinMode(PIN_LEFT_OUTPUT, OUTPUT);
     pinMode(PIN_LEFT_PWM, OUTPUT);
 
